@@ -20,6 +20,9 @@ const todoSchema = new Schema({
     priority : {
         type : String, // low , moderate, high
     },
+    status : {
+        type : String, 
+    },
 
 },{timestamps:true});
 

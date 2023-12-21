@@ -40,7 +40,7 @@ const getAuthorWishTodo = async (req, res) => {
             })
         }
         const todos = await Todo.find({userEmail: email}).populate("user")
-
+        console.log(todos);
         res.status(200).send({
             success : true,
             todos,
@@ -58,7 +58,8 @@ const getAuthorWishTodo = async (req, res) => {
 // update todo by email
 const updateTodoByUserEmail = async (req, res) => {
     try {
-        const email = req.params?.email;
+        const email = req.query?.email;
+        const id = req.params?.id;
         const tokenEmaill = req.user?.email;
      
         if(email !== tokenEmaill ){
@@ -69,7 +70,7 @@ const updateTodoByUserEmail = async (req, res) => {
         }
 
         const todoUpdateData = req.body;
-        const todo = await Todo.findOneAndUpdate({userEmail: email}, todoUpdateData, {new:true, runValidators:true})
+        const todo = await Todo.findOneAndUpdate({_id:id}, todoUpdateData, {new:true, runValidators:true})
         if(!todo){
             return res.status(404).send({
                 success:false,
@@ -92,7 +93,8 @@ const updateTodoByUserEmail = async (req, res) => {
 // Delete todo by email
 const deleteTodoByUserEmail = async (req, res) => {
     try {
-        const email = req.params?.email;
+        const id = req.params?.email;
+        const email = req.query?.email;
         const tokenEmaill = req.user?.email;
      
         if(email !== tokenEmaill ){
@@ -102,7 +104,7 @@ const deleteTodoByUserEmail = async (req, res) => {
             })
         }
 
-        const todo = await Todo.findOneAndDelete({userEmail: email})
+        const todo = await Todo.findOneAndDelete(id)
         if(!todo){
             return res.status(404).send({
                 success:false,
@@ -127,7 +129,8 @@ const deleteTodoByUserEmail = async (req, res) => {
 const getSignleTodoByUserEmail = async (req, res) => {
     try {
        
-        const email = req.params?.email;
+        const id = req.params?.id;
+        const email = req.query?.email;
         const tokenEmaill = req.user?.email;
 
         if(email !== tokenEmaill ){
@@ -137,7 +140,7 @@ const getSignleTodoByUserEmail = async (req, res) => {
             })
         }
        
-        const todo = await Todo.findOne({userEmail: email}).populate('user');
+        const todo = await Todo.findById(id).populate('user');
         if(!todo){
             return res.status(404).send({
                 success: false,

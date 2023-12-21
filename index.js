@@ -6,13 +6,14 @@ const connectMongoDb = require('./src/config/connectDatabase');
 const { serverPort } = require('./src/services/envSecret');
 const userRouter = require('./src/routes/userRoutes');
 const todoRouter = require('./src/routes/todoRoutes');
+const authenticationRoute = require('./src/routes/authenticationRoutes');
 
 connectMongoDb()
 
 // Middleware
 app.use(
     cors({
-        origin: ['http://localhost:5173'],
+        origin: ['http://localhost:5173','https://task-management-app-116c8.web.app'],
         credentials: true,
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     })
@@ -25,6 +26,7 @@ app.use(cookieParser());
 
 app.use('/api' , userRouter);
 app.use('/api' , todoRouter);
+app.use('/api' , authenticationRoute);
 
 
 
