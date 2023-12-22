@@ -35,7 +35,12 @@ const createJwt = async (req, res) => {
 // logout user and clear session
 const userLogout = async (req, res) => {
     try {
-        res.clearCookie("token", {maxAge:0}).send({
+        res.clearCookie("token", {
+            maxAge:0,
+            httpOnly: true,
+            secure: true,
+            sameSite:  'none',
+        }).send({
             success : true,
             message : "User logout"
         })
